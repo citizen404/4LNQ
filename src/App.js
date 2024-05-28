@@ -13,7 +13,7 @@ function App() {
     }
     return (
         <div className="App">
-            <button onClick={{onClose}}>Close</button>
+            <button onClick={onClose}>Close</button>
         </div>
     );
 }
