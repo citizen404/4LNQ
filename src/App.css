@@ -1,69 +1,84 @@
 /* App.css */
 
-.center-container {
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
+}
+
+.App {
+  text-align: center;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+}
+
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 20px;
+}
+
+.section {
+  margin-bottom: 20px;
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(2, auto); /* Two columns with auto width */
-  gap: 10px; /* Reduced space between grid items */
+  grid-template-columns: repeat(4, auto);
+  gap: 10px;
+  justify-content: center;
+}
+
+.dropdown {
+  width: 200px;
+  height: 40px;
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .option-button {
-  display: inline-block;
-  width: 80px; /* Reduced width */
-  height: 80px; /* Reduced height */
-  margin: 5px; /* Reduced margin */
+  width: 100px;
+  height: 50px;
   font-size: 14px;
   font-weight: 600;
   color: #fff;
   background-color: #007aff;
   border: none;
-  border-radius: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  text-align: center;
-  vertical-align: middle;
-  line-height: 80px; /* Align text vertically */
-  position: relative;
+  transition: background-color 0.3s ease;
 }
 
 .option-button:hover {
   background-color: #005bb5;
 }
 
-.option-button:active {
-  background-color: #00408b;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
 .option-button.selected {
   background-color: #34c759;
 }
 
-.option-button .icon {
-  display: block;
-  font-size: 24px;
-  line-height: 1; /* Adjust line height to avoid spacing issues */
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+.action-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007aff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
 }
 
-.option-button .label {
-  display: block;
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+.action-button:hover {
+  background-color: #005bb5;
 }
 
 .button {
@@ -93,9 +108,4 @@
 .button.disabled {
   background-color: #cccccc;
   cursor: not-allowed;
-}
-
-body {
-  background: var(--tg-theme-bg-color);
-  color: var(--tg-theme-text-color);
 }
