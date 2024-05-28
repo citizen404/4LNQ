@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css'; // Import the CSS file
+const tg = window.Telegram.WebApp;
 
 function App() {
     const [step, setStep] = useState(1);
@@ -125,9 +126,17 @@ function App() {
         }
     };
 
+    useEffect( () => {
+        tg.ready();
+    }, [])
+
+    const onClose = () => {
+        tg.close()
+    }
     return (
         <div className="App">
             {renderOptions()}
+            <button onClick={{onClose}}>Close</button>
         </div>
     );
 }
