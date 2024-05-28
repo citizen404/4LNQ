@@ -1,21 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import './App.css'; // Import the CSS file
 
-const tg = window.Telegram.WebApp;
-
-function App(effect, deps) {
-
+function App() {
     const [step, setStep] = useState(1);
     const [itemSize, setItemSize] = useState('');
     const [itemWeight, setItemWeight] = useState('');
 
-    useEffect(() => {
-        tg.ready();
-    },  [])
-
-    const onClose = () => {
-        tg.close();
-    };
     const handleSizeClick = (size) => {
         setItemSize(size);
     };
@@ -76,7 +66,7 @@ function App(effect, deps) {
                     </div>
                     <div>
                         <button className="button" onClick={handleNext} disabled={!itemSize}>Next</button>
-                        <button onClick={onClose}>Close</button>
+                        <button className="button">Close</button>
                     </div>
                 </div>
             );
