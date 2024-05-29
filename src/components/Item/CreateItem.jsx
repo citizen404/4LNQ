@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import './CreateItem.css';
 import { useTelegram } from "../../hooks/useTelegram";
 
@@ -13,6 +13,24 @@ function CreateItem() {
     const [departure, setDeparture] = useState('');
     const [arrival, setArrival] = useState('');
     const [userId, setUserId] = useState('');
+
+    const onSendData = useCallback(() => {
+        const data = {
+            weight,
+            size,
+            value,
+            departure,
+            arrival
+        }
+        tg.sendData(JSON.stringify(data));
+    }, [tg, weight, size, value, departure, arrival])
+
+    useEffect(() => {
+        tg.onEvent('mainButtonClicked', onSendData)
+        return() => {
+            tg.offEvent('mainButtonClicked', onSendData())
+        }
+    })
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
