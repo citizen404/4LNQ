@@ -20,17 +20,40 @@ function CreateItem() {
             size,
             value,
             departure,
-            arrival
-        }
-        tg.sendData(JSON.stringify(data));
-    }, [tg, weight, size, value, departure, arrival])
+            arrival,
+            sender_uid: userId,
+        };
+
+        // Save data to the backend
+        fetch('/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                console.log('Success:', result);
+                // Send data to the Telegram chat
+                tg.sendData(JSON.stringify(data));
+                alert('Data saved successfully');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error saving data');
+            });
+    }, [tg, size, weight, value, departure, arrival, userId]);
+
+//        tg.sendData(JSON.stringify(data));
+//    }, [tg, weight, size, value, departure, arrival])
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData)
         return() => {
             tg.offEvent('mainButtonClicked', onSendData())
         }
-    })
+    }, [tg, onSendData])
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -62,27 +85,7 @@ function CreateItem() {
     };
 
     const handleSubmit = () => {
-        if (size && weight && value && departure && arrival) {
-            const data = { size, weight, value, departure, arrival, sender_uid: userId };
-            fetch('/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-                .then((response) => response.json())
-                .then((result) => {
-                    console.log('Success:', result);
-                    alert('Data saved successfully');
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    alert('Error saving data');
-                });
-        } else {
-            alert('Please select all options.');
-        }
+        onSendData();
     };
 
     return (
