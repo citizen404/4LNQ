@@ -5,7 +5,8 @@ import { useTelegram } from "../../hooks/useTelegram";
 const airportCodes = ["JFK", "DXB", "LAX", "LHR", "CDG", "AMS", "FRA", "HND", "SYD", "ORD"];
 
 function CreateItem() {
-    const { onToggleButton, tg } = useTelegram();
+    const { tg } = useTelegram();
+    //const { onToggleButton, tg } = useTelegram();
     const [size, setSize] = useState('');
     const [weight, setWeight] = useState('');
     const [value, setValue] = useState('');
@@ -174,7 +175,6 @@ function CreateItem() {
                     </div>
                 </div>
                 <button className="action-button" onClick={handleSubmit}>Submit</button>
-                <button className="action-button" onClick={onToggleButton}>Toggle</button>
             </div>
         </div>
     );
