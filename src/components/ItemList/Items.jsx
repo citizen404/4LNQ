@@ -3,12 +3,12 @@ import './Items.css';
 
 function Items() {
     const [items, setItems] = useState([]);
-    const [userId, setUserId] = useState('');
+ //   const [userId, setUserId] = useState('');
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const userIdFromUrl = urlParams.get('userId');
-        setUserId(userIdFromUrl);
+ //       setUserId(userIdFromUrl);
 
         if (userIdFromUrl) {
             fetch(`/items?userId=${userIdFromUrl}`)
