@@ -52,7 +52,7 @@ body {
   color: #fff;
   background-color: #007aff;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
