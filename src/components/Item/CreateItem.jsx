@@ -16,8 +16,19 @@ function CreateItem() {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const userIdFromUrl = urlParams.get('userId');
+        tg.MainButton.setParams({
+            text: 'Submit item'
+        })
         setUserId(userIdFromUrl);
     }, [tg]);
+
+    useEffect(()=>{
+        if(!size || !weight || !value || !departure || !arrival) {
+            tg.MainButton.hide();
+        } else {
+            tg.MainButton.show();
+        }
+    }, [size, weight, value, departure, arrival, tg.MainButton])
 
     const handleSizeClick = (selectedSize) => {
         setSize(selectedSize);
@@ -59,7 +70,7 @@ function CreateItem() {
         <div className="CreateItem">
             <div className="container">
                 <div className="section">
-                    <h2>Choose Size</h2>
+                    <h2>Size</h2>
                     <div className="grid-container">
                         <button
                             className={`option-button ${size === 'Pocket' ? 'selected' : ''}`}
@@ -88,7 +99,7 @@ function CreateItem() {
                     </div>
                 </div>
                 <div className="section">
-                    <h2>Choose Weight</h2>
+                    <h2>Weight</h2>
                     <div className="grid-container">
                         <button
                             className={`option-button ${weight === '1 KG' ? 'selected' : ''}`}
@@ -117,7 +128,7 @@ function CreateItem() {
                     </div>
                 </div>
                 <div className="section">
-                    <h2>Choose Value</h2>
+                    <h2>Value</h2>
                     <div className="grid-container">
                         <button
                             className={`option-button ${value === '100' ? 'selected' : ''}`}
@@ -146,7 +157,7 @@ function CreateItem() {
                     </div>
                 </div>
                 <div className="section">
-                    <h2>Choose Departure and Arrival</h2>
+                    <h2>Departure and Arrival</h2>
                     <div className="dropdown-container">
                         <select value={departure} onChange={(e) => setDeparture(e.target.value)} className="dropdown">
                             <option value="" disabled>From</option>

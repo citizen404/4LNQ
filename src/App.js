@@ -6,7 +6,7 @@ import CreateItem from './components/Item/CreateItem';
 import Items from './components/ItemList/Items';
 
 function App() {
-    const { tg } = useTelegram();
+    const { onToggleButton, tg } = useTelegram();
 
     useEffect(() => {
         tg.ready();
