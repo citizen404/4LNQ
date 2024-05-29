@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { useTelegram } from "./hooks/useTelegram";
+// import { useTelegram } from "./hooks/useTelegram";
 import Header from "./components/Header/Header";
 import CreateItem from './components/Item/CreateItem';
 import Items from './components/ItemList/Items';
 
 function App() {
-    const { onToggleButton, tg } = useTelegram();
+    //const { onToggleButton, tg } = useTelegram();
 
-    useEffect(() => {
-        tg.ready();
-    }, [tg]);
+   // useEffect(() => {
+   //     tg.ready();
+   // }, [tg]);
 
     return (
         <div className="App">
