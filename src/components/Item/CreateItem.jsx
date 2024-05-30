@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './CreateItem.css';
 import { useTelegram } from "../../hooks/useTelegram";
 
@@ -13,7 +13,7 @@ function CreateItem() {
     const [arrival, setArrival] = useState('');
     const [userId, setUserId] = useState('');
 
-    const onSendData = () => {
+    const onSendData = useCallback(() => {
         const data = {
             size,
             weight,
@@ -47,7 +47,7 @@ function CreateItem() {
                 console.error('Error:', error);
                 alert('Error saving data: ' + error.message);
             });
-    };
+    }, [size, weight, value, departure, arrival, userId, tg]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
