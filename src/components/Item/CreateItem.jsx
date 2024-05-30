@@ -23,6 +23,8 @@ function CreateItem() {
             sender_uid: userId,
         };
 
+        console.log('Data to be sent:', data); // Log data before sending
+
         fetch('/save', {
             method: 'POST',
             headers: {
