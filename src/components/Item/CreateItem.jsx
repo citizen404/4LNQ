@@ -22,7 +22,7 @@ function CreateItem() {
             departure,
             arrival,
             sender_uid: userId,
-        };
+        }
 
         // Save data to the backend
         fetch('/save', {
@@ -41,19 +41,16 @@ function CreateItem() {
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error saving data');
+                alert('Error saving data' + error.message);
             });
-    }, [tg, size, weight, value, departure, arrival, userId]);
-
-//        tg.sendData(JSON.stringify(data));
-//    }, [tg, weight, size, value, departure, arrival])
+    }, [])
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData)
         return() => {
             tg.offEvent('mainButtonClicked', onSendData())
         }
-    }, [tg, onSendData])
+    }, [])
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -70,7 +67,7 @@ function CreateItem() {
         } else {
             tg.MainButton.show();
         }
-    }, [size, weight, value, departure, arrival, tg.MainButton])
+    }, [size, weight, value, departure, arrival])
 
     const handleSizeClick = (selectedSize) => {
         setSize(selectedSize);
@@ -82,10 +79,6 @@ function CreateItem() {
 
     const handleValueClick = (selectedValue) => {
         setValue(selectedValue);
-    };
-
-    const handleSubmit = () => {
-        onSendData();
     };
 
     return (
@@ -195,7 +188,6 @@ function CreateItem() {
                         </select>
                     </div>
                 </div>
-                <button className="action-button" onClick={handleSubmit}>Submit</button>
             </div>
         </div>
     );

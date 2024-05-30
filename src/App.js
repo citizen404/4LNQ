@@ -6,12 +6,6 @@ import CreateItem from './components/Item/CreateItem';
 import Items from './components/ItemList/Items';
 
 function App() {
-    //const { onToggleButton, tg } = useTelegram();
-
-   // useEffect(() => {
-   //     tg.ready();
-   // }, [tg]);
-
     return (
         <div className="App">
             <Header />
