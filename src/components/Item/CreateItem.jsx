@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect } from 'react';
 import './CreateItem.css';
 import { useTelegram } from "../../hooks/useTelegram";
 
@@ -6,7 +6,6 @@ const airportCodes = ["JFK", "DXB", "LAX", "LHR", "CDG", "AMS", "FRA", "HND", "S
 
 function CreateItem() {
     const { tg } = useTelegram();
-    //const { onToggleButton, tg } = useTelegram();
     const [size, setSize] = useState('');
     const [weight, setWeight] = useState('');
     const [value, setValue] = useState('');
@@ -14,17 +13,16 @@ function CreateItem() {
     const [arrival, setArrival] = useState('');
     const [userId, setUserId] = useState('');
 
-    const onSendData = useCallback(() => {
+    const onSendData = () => {
         const data = {
-            weight,
             size,
+            weight,
             value,
             departure,
             arrival,
             sender_uid: userId,
-        }
+        };
 
-        // Save data to the backend
         fetch('/save', {
             method: 'POST',
             headers: {
@@ -32,42 +30,48 @@ function CreateItem() {
             },
             body: JSON.stringify(data),
         })
-            .then((response) => response.json())
+            .then((response) => {
+                if (!response.ok) {
+                    return response.json().then((err) => {
+                        throw new Error(`Server error: ${err.message}`);
+                    });
+                }
+                return response.json();
+            })
             .then((result) => {
                 console.log('Success:', result);
-                // Send data to the Telegram chat
                 tg.sendData(JSON.stringify(data));
                 alert('Data saved successfully');
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('Error saving data' + error.message);
+                alert('Error saving data: ' + error.message);
             });
-    }, [])
+    };
 
     useEffect(() => {
-        tg.onEvent('mainButtonClicked', onSendData)
-        return() => {
-            tg.offEvent('mainButtonClicked', onSendData())
-        }
-    }, [])
+        tg.onEvent('mainButtonClicked', onSendData);
+        return () => {
+            tg.offEvent('mainButtonClicked', onSendData);
+        };
+    }, [tg, onSendData]);
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const userIdFromUrl = urlParams.get('userId');
         tg.MainButton.setParams({
-            text: 'Submit item'
-        })
+            text: 'Submit item',
+        });
         setUserId(userIdFromUrl);
     }, [tg]);
 
-    useEffect(()=>{
-        if(!size || !weight || !value || !departure || !arrival) {
+    useEffect(() => {
+        if (!size || !weight || !value || !departure || !arrival) {
             tg.MainButton.hide();
         } else {
             tg.MainButton.show();
         }
-    }, [size, weight, value, departure, arrival])
+    }, [size, weight, value, departure, arrival, tg.MainButton]);
 
     const handleSizeClick = (selectedSize) => {
         setSize(selectedSize);
@@ -79,6 +83,10 @@ function CreateItem() {
 
     const handleValueClick = (selectedValue) => {
         setValue(selectedValue);
+    };
+
+    const handleSubmit = () => {
+        onSendData();
     };
 
     return (
@@ -188,6 +196,7 @@ function CreateItem() {
                         </select>
                     </div>
                 </div>
+                <button className="action-button" onClick={handleSubmit}>Submit</button>
             </div>
         </div>
     );
