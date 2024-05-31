@@ -20,6 +20,7 @@ function CreateItem() {
             value,
             departure,
             arrival,
+            //sender_uid: '5122519517',
             sender_uid: userId,
         };
 
@@ -61,6 +62,9 @@ function CreateItem() {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const userIdFromUrl = urlParams.get('userId');
+
+        console.log('userId:', userIdFromUrl);
+
         tg.MainButton.setParams({
             text: 'Submit item',
         });

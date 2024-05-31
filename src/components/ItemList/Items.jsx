@@ -8,6 +8,8 @@ function Items() {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const userIdFromUrl = urlParams.get('userId');
+
+        console.log('userId', userIdFromUrl);
  //       setUserId(userIdFromUrl);
 
         if (userIdFromUrl) {
