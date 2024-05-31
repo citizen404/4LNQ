@@ -12,6 +12,11 @@ function CreateItem() {
     const [departure, setDeparture] = useState('');
     const [arrival, setArrival] = useState('');
     const [userId, setUserId] = useState('');
+    const [logs, setLogs] = useState([]);
+
+    const addLog = (log) => {
+        setLogs(prevLogs => [...prevLogs, log]);
+    };
 
     const onSendData = useCallback(() => {
         const data = {
@@ -20,11 +25,10 @@ function CreateItem() {
             value,
             departure,
             arrival,
-            //sender_uid: '5122519517',
             sender_uid: userId,
         };
 
-        console.log('Data to be sent:', data); // Log data before sending
+        addLog(`Data to be sent: ${JSON.stringify(data)}`);
 
         fetch('/save', {
             method: 'POST',
@@ -42,12 +46,12 @@ function CreateItem() {
                 return response.json();
             })
             .then((result) => {
-                console.log('Success:', result);
+                addLog(`Success: ${JSON.stringify(result)}`);
                 tg.sendData(JSON.stringify(data));
                 alert('Data saved successfully');
             })
             .catch((error) => {
-                console.error('Error:', error);
+                addLog(`Error: ${error.message}`);
                 alert('Error saving data: ' + error.message);
             });
     }, [size, weight, value, departure, arrival, userId, tg]);
@@ -63,7 +67,7 @@ function CreateItem() {
         const urlParams = new URLSearchParams(window.location.search);
         const userIdFromUrl = urlParams.get('userId');
 
-        console.log('userId:', userIdFromUrl);
+        addLog(`userId: ${userIdFromUrl}`);
 
         tg.MainButton.setParams({
             text: 'Submit item',
@@ -203,6 +207,10 @@ function CreateItem() {
                     </div>
                 </div>
                 <button className="action-button" onClick={handleSubmit}>Submit</button>
+            </div>
+            <div className="logs">
+                <h2>Logs</h2>
+                <pre>{logs.join('\n')}</pre>
             </div>
         </div>
     );
