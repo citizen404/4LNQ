@@ -3,14 +3,12 @@ import './Items.css';
 
 function Items() {
     const [items, setItems] = useState([]);
- //   const [userId, setUserId] = useState('');
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const userIdFromUrl = urlParams.get('userId');
 
         console.log('userId', userIdFromUrl);
- //       setUserId(userIdFromUrl);
 
         if (userIdFromUrl) {
             fetch(`/items?userId=${userIdFromUrl}`)
@@ -24,17 +22,30 @@ function Items() {
         <div className="Items">
             <h2>My Items</h2>
             {items.length > 0 ? (
-                <ul>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Size</th>
+                        <th>Weight</th>
+                        <th>Value</th>
+                        <th>Urgency</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {items.map(item => (
-                        <li key={item._id}>
-                            <p>Size: {item.size}</p>
-                            <p>Weight: {item.weight}</p>
-                            <p>Value: {item.value}</p>
-                            <p>Departure: {item.departure}</p>
-                            <p>Arrival: {item.arrival}</p>
-                        </li>
+                        <tr key={item._id}>
+                            <td>{item.size}</td>
+                            <td>{item.weight}</td>
+                            <td>{item.value}</td>
+                            <td>{item.urgency}</td>
+                            <td>{item.departure}</td>
+                            <td>{item.arrival}</td>
+                        </tr>
                     ))}
-                </ul>
+                    </tbody>
+                </table>
             ) : (
                 <p>No items found.</p>
             )}

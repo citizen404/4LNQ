@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import Header from "./components/Header/Header";
 import CreateItem from './components/Item/CreateItem';
 import Items from './components/ItemList/Items';
+import CreateTrip from "./components/Trip/CreateTrip";
 
 function App() {
     return (
@@ -11,6 +12,7 @@ function App() {
             <Header />
             <Routes>
                 <Route index element={<CreateItem />} />
+                <Route path="/newTrip" element={<CreateTrip />} />
                 <Route path="/items" element={<Items />} />
             </Routes>
         </div>

@@ -1,17 +1,30 @@
-/* Items.css */
-
 .Items {
     padding: 20px;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
 }
 
-li {
+table, th, td {
     border: 1px solid #ddd;
-    margin: 10px 0;
+}
+
+th, td {
     padding: 10px;
-    border-radius: 5px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
 }

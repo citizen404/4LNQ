@@ -2,16 +2,36 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './CreateItem.css';
 import { useTelegram } from "../../hooks/useTelegram";
 
-const airportCodes = ["JFK", "DXB", "LAX", "LHR", "CDG", "AMS", "FRA", "HND", "SYD", "ORD"];
+const airportCodes = [
+    "JFK - New York, USA 🇺🇸",
+    "DXB - Dubai, UAE 🇦🇪",
+    "LAX - Los Angeles, USA 🇺🇸",
+    "LHR - London, UK 🇬🇧",
+    "CDG - Paris, France 🇫🇷",
+    "AMS - Amsterdam, Netherlands 🇳🇱",
+    "FRA - Frankfurt, Germany 🇩🇪",
+    "HND - Tokyo, Japan 🇯🇵",
+    "SYD - Sydney, Australia 🇦🇺",
+    "ORD - Chicago, USA 🇺🇸"
+];
+
+const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
 
 function CreateItem() {
     const { tg } = useTelegram();
     const [size, setSize] = useState('');
     const [weight, setWeight] = useState('');
     const [value, setValue] = useState('');
+    const [urgency, setUrgency] = useState('');
     const [departure, setDeparture] = useState('');
     const [arrival, setArrival] = useState('');
     const [userId, setUserId] = useState('');
+    let date = formatDate(new Date());
     const [logs, setLogs] = useState([]);
 
     const addLog = (log) => {
@@ -23,8 +43,10 @@ function CreateItem() {
             size,
             weight,
             value,
+            urgency,
             departure,
             arrival,
+            date,
             sender_uid: userId,
         };
 
@@ -54,7 +76,7 @@ function CreateItem() {
                 addLog(`Error: ${error.message}`);
                 alert('Error saving data: ' + error.message);
             });
-    }, [size, weight, value, departure, arrival, userId, tg]);
+    }, [size, weight, value, departure, arrival, urgency, date, userId, tg]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
@@ -76,12 +98,12 @@ function CreateItem() {
     }, [tg]);
 
     useEffect(() => {
-        if (!size || !weight || !value || !departure || !arrival) {
+        if (!size || !weight || !value || !urgency || !departure || !arrival) {
             tg.MainButton.hide();
         } else {
             tg.MainButton.show();
         }
-    }, [size, weight, value, departure, arrival, tg.MainButton]);
+    }, [size, weight, value, urgency, departure, arrival, tg.MainButton]);
 
     const handleSizeClick = (selectedSize) => {
         setSize(selectedSize);
@@ -93,6 +115,10 @@ function CreateItem() {
 
     const handleValueClick = (selectedValue) => {
         setValue(selectedValue);
+    };
+
+    const handleUrgencyClick = (selectedUrgency) => {
+        setUrgency(selectedUrgency);
     };
 
     const handleSubmit = () => {
@@ -190,19 +216,54 @@ function CreateItem() {
                     </div>
                 </div>
                 <div className="section">
+                    <h2>Urgency</h2>
+                    <div className="grid-container">
+                        <button
+                            className={`option-button ${urgency === 'ASAP' ? 'selected' : ''}`}
+                            onClick={() => handleUrgencyClick('ASAP')}
+                        >
+                            ASAP
+                        </button>
+                        <button
+                            className={`option-button ${urgency === '3 days' ? 'selected' : ''}`}
+                            onClick={() => handleUrgencyClick('3d')}
+                        >
+                            3 days
+                        </button>
+                        <button
+                            className={`option-button ${urgency === 'A week' ? 'selected' : ''}`}
+                            onClick={() => handleUrgencyClick('Week')}
+                        >
+                            A week
+                        </button>
+                        <button
+                            className={`option-button ${urgency === 'More' ? 'selected' : ''}`}
+                            onClick={() => handleUrgencyClick('More')}
+                        >
+                            More
+                        </button>
+                    </div>
+                </div>
+                <div className="section">
                     <h2>Departure and Arrival</h2>
                     <div className="dropdown-container">
                         <select value={departure} onChange={(e) => setDeparture(e.target.value)} className="dropdown">
                             <option value="" disabled>From</option>
-                            {airportCodes.map((code) => (
-                                <option key={code} value={code}>{code}</option>
-                            ))}
+                            {airportCodes.map((code) => {
+                                const airportCode = code.substring(0, 3); // Extract the first three characters
+                                return (
+                                    <option key={airportCode} value={airportCode}>{code}</option>
+                                );
+                            })}
                         </select>
                         <select value={arrival} onChange={(e) => setArrival(e.target.value)} className="dropdown">
                             <option value="" disabled>To</option>
-                            {airportCodes.map((code) => (
-                                <option key={code} value={code}>{code}</option>
-                            ))}
+                            {airportCodes.map((code) => {
+                                const airportCode = code.substring(0, 3); // Extract the first three characters
+                                return (
+                                    <option key={airportCode} value={airportCode}>{code}</option>
+                                );
+                            })}
                         </select>
                     </div>
                 </div>
