@@ -1,3 +1,4 @@
+//http://localhost:3000/newTrip?userId=5122519517
 import React, { useState, useEffect, useCallback } from 'react';
 import './CreateTrip.css';
 import { useTelegram } from "../../hooks/useTelegram";

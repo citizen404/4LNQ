@@ -22,6 +22,32 @@ const formatDate = (date) => {
     return `${year}-${month}-${day}`;
 };
 
+const fetchTonRate = async () => {
+    const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd');
+    const data = await response.json();
+    return data['the-open-network'].usd;
+};
+
+const tonRate = await fetchTonRate();
+
+const calculateEstimate = async (size, weight, value, urgency, departure, arrival) => {
+    if (!size || !weight || !value || !urgency || !departure || !arrival) return "Please select all options";
+
+    // Dummy estimate calculation logic, replace with actual logic
+    const sizeFactor = size === 'Pocket' ? 1 : size === 'Handy' ? 1.2 : size === 'Cabin' ? 2 : 3;
+    const weightFactor = weight === '1 KG' ? 1 : weight === '5 KG' ? 1.2 : weight === '10 KG' ? 2 : 3;
+    const valueFactor = value === '100' ? 0.5 : value === '500' ? 1.2 : value === '1000' ? 1.7 : 2;
+    const urgencyFactor = urgency === 'ASAP' ? 1.17 : urgency === '3 days' ? 1.15 : urgency === 'A week' ? 1.05 : 1;
+
+    const baseCost = 0.5 * 30; // Base cost in USD - delete 0.5 !
+    const estimate = baseCost * sizeFactor * weightFactor * valueFactor * urgencyFactor;
+
+//    const tonRate = await fetchTonRate();
+    const estimateTON = estimate / tonRate;
+
+    return `$${estimate.toFixed(2)} (${estimateTON.toFixed(2)} TON)`;
+};
+
 function CreateItem() {
     const { tg } = useTelegram();
     const [size, setSize] = useState('');
@@ -30,6 +56,7 @@ function CreateItem() {
     const [urgency, setUrgency] = useState('');
     const [departure, setDeparture] = useState('');
     const [arrival, setArrival] = useState('');
+    const [estimate, setEstimate] = useState('');
     const [userId, setUserId] = useState('');
     let date = formatDate(new Date());
     const [logs, setLogs] = useState([]);
@@ -47,6 +74,7 @@ function CreateItem() {
             departure,
             arrival,
             date,
+            estimate,
             sender_uid: userId,
         };
 
@@ -76,7 +104,7 @@ function CreateItem() {
                 addLog(`Error: ${error.message}`);
                 alert('Error saving data: ' + error.message);
             });
-    }, [size, weight, value, departure, arrival, urgency, date, userId, tg]);
+    }, [size, weight, value, departure, arrival, urgency, date, userId, estimate, tg]);
 
     useEffect(() => {
         tg.onEvent('mainButtonClicked', onSendData);
@@ -103,6 +131,12 @@ function CreateItem() {
         } else {
             tg.MainButton.show();
         }
+        const updateEstimate = async () => {
+            const estimate = await calculateEstimate(size, weight, value, urgency, departure, arrival);
+            setEstimate(estimate);
+        };
+        updateEstimate();
+        //setEstimate(calculateEstimate(size, weight, value, urgency, departure, arrival));
     }, [size, weight, value, urgency, departure, arrival, tg.MainButton]);
 
     const handleSizeClick = (selectedSize) => {
@@ -226,13 +260,13 @@ function CreateItem() {
                         </button>
                         <button
                             className={`option-button ${urgency === '3 days' ? 'selected' : ''}`}
-                            onClick={() => handleUrgencyClick('3d')}
+                            onClick={() => handleUrgencyClick('3 days')}
                         >
                             3 days
                         </button>
                         <button
                             className={`option-button ${urgency === 'A week' ? 'selected' : ''}`}
-                            onClick={() => handleUrgencyClick('Week')}
+                            onClick={() => handleUrgencyClick('A week')}
                         >
                             A week
                         </button>
@@ -265,6 +299,12 @@ function CreateItem() {
                                 );
                             })}
                         </select>
+                    </div>
+                </div>
+                <div className="section">
+                    <h2>Estimated Cost</h2>
+                    <div className="estimate">
+                        <h3>{estimate}</h3>
                     </div>
                 </div>
                 <button className="action-button" onClick={handleSubmit}>Submit</button>
