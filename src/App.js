@@ -12,6 +12,7 @@ function App() {
             <Header />
             <Routes>
                 <Route index element={<CreateItem />} />
+                <Route path="/newItem" element={<CreateItem />} />
                 <Route path="/newTrip" element={<CreateTrip />} />
                 <Route path="/items" element={<Items />} />
                 <Route path="/matches/:itemId" element={<Matches />} />

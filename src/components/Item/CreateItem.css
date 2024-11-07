@@ -13,40 +13,90 @@ body {
 
 .App {
     text-align: center;
-    width: 100%;
-    max-width: 600px;
+    width: 100vw;
+    max-width: 400px;
     margin: auto;
+}
+
+.flex{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 10px; /* Optional: Adds some space between buttons */
+}
+
+.items{
+    flex: 1 1 calc(50% - 20px); /*flex: 1 1 100px;*/
+    margin: 10px; /* Optional: Adds some space around each button */
+    min-width: 80px; /* Ensures each button has at least a minimum width */
+    box-sizing: border-box;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .flex-item {
+        flex: 1 1 calc(100% - 20px); /* Adjusts button to full width on narrow screens */
+    }
+    .switch-label {
+        font-size: 14px; /* Adjust font size for smaller screens if needed */
+    }
+    .dropdown-container {
+        flex-direction: column;
+    }
+
+    .dropdown {
+        font-size: 12px; /* Adjust font size for smaller screens */
+        padding: 4px; /* Adjust padding for smaller screens */
+        margin-left: 5vw;
+        margin-right: 5vw;
+    }
+}
+
+.dropdown-container {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+}
+
+.dropdown {
+    width: 100%;
+    max-width: 400px; /* Set a maximum width if desired */
+    height: 40px;
+    font-size: 14px;
+    padding: 5px;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.switch-label {
+    font-size: 16px; /* Change this value to your desired font size */
 }
 
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.section {
+    margin-top: 20%;
     margin-bottom: 20px;
 }
 
-.grid-container {
+.section {
+    display: grid;
+    margin-bottom: 20px;
+}
+
+.flex-container {
     display: grid;
     grid-template-columns: repeat(4, auto);
     gap: 10px;
     justify-content: center;
 }
 
-.dropdown {
-    width: 200px;
-    height: 40px;
-    font-size: 16px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
 .option-button {
     width: 100px;
-    height: 50px;
+    height: 40px;
     font-size: 14px;
     font-weight: 600;
     color: #fff;
@@ -67,7 +117,7 @@ body {
 
 .action-button {
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 14px;
     color: #fff;
     background-color: #007aff;
     border: none;
@@ -85,7 +135,7 @@ body {
     display: inline-block;
     padding: 10px 20px;
     margin: 10px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: #fff;
     background-color: #007aff;
