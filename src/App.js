@@ -23,3 +23,4 @@ function App() {
 }
 
 export default App;
+//git remote set-url origin https://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@github.com/citizen404/4lnq_ts_app.git
